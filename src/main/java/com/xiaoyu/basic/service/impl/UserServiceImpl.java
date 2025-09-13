@@ -1,5 +1,6 @@
 package com.xiaoyu.basic.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
@@ -17,6 +18,7 @@ import com.xiaoyu.basic.model.enums.UserRoleEnum;
 import com.xiaoyu.basic.model.vo.LoginUserVO;
 import com.xiaoyu.basic.model.vo.UserVO;
 import com.xiaoyu.basic.service.UserService;
+import com.xiaoyu.basic.utils.DeviceUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
@@ -91,6 +93,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    public boolean isAdmin(HttpServletRequest request) {
+        // 仅管理员可查询
+        // 基于 Sa-Token 改造
+        Object userObj = StpUtil.getSession().get(USER_LOGIN_STATE);
+        // Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User user = (User) userObj;
+        return isAdmin(user);
+    }
+
+    @Override
+    public boolean isAdmin(User user) {
+        if (user == null) {
+            return false;
+        }
+        return UserRoleEnum.ADMIN.getValue().equals(user.getUserRole());
+    }
+
+
+    @Override
     public LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
         //校验参数
         if (StrUtil.hasBlank(userAccount, userPassword)) {
@@ -111,7 +132,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
         }
         //将用户信息保存session
-        request.getSession().setAttribute(USER_LOGIN_STATE, user);
+        //request.getSession().setAttribute(USER_LOGIN_STATE, user);
+        StpUtil.login(user.getId(), DeviceUtils.getRequestDevice(request));
+        StpUtil.getSession().set(USER_LOGIN_STATE, user);
         LoginUserVO loginUserVO = getLoginUserVO(user);
         return loginUserVO;
     }
@@ -119,14 +142,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getLoginUser(HttpServletRequest request) {
         // 先判断是否已登录
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User currentUser = (User) userObj;
-        if (currentUser == null || currentUser.getId() == null) {
+        Object loginUserId = StpUtil.getLoginIdDefaultNull();
+        if (loginUserId == null){
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         // 从数据库查询（追求性能的话可以注释，直接返回上述结果）
-        long userId = currentUser.getId();
-        currentUser = this.getById(userId);
+        User currentUser = this.getById((String)loginUserId);
         if (currentUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
@@ -136,15 +157,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean userLogout(HttpServletRequest request) {
-        // 先判断是否已登录
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        if (userObj == null) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "未登录");
-        }
+        StpUtil.checkLogin();
         // 移除登录态
-        request.getSession().removeAttribute(USER_LOGIN_STATE);
+        StpUtil.logout();
         return true;
     }
+
 
     @Override
     public UserVO getUserVO(User user) {

@@ -1,5 +1,6 @@
 package com.xiaoyu.basic.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiaoyu.basic.annotation.AuthCheck;
@@ -81,7 +82,7 @@ public class UserController {
      * 创建用户
      */
     @PostMapping("/add")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @SaCheckRole(UserConstant.ADMIN_ROLE)
     public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest) {
         ThrowUtils.throwIf(userAddRequest == null, ErrorCode.PARAMS_ERROR);
         User user = new User();
