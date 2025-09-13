@@ -1,12 +1,11 @@
-# Basic Backend - AI代码生成后端服务
+# Basic Backend - 后端基础模板
 
-一个基于Spring Boot 3的AI代码生成后端服务，集成了用户管理、文件存储和AI代码生成功能。
+一个基于Spring Boot 3的后端基础模板，集成了用户管理、用户登录、文件存储功能。
 
 ## 📋 项目简介
 
 这是一个现代化的后端服务项目，主要功能包括：
 - 🔐 用户认证与权限管理
-- 🤖 AI代码生成（支持HTML和多文件代码生成）
 - 📁 文件存储服务（基于MinIO）
 - 📝 RESTful API设计
 - 📚 完整的API文档（Knife4j）
@@ -22,11 +21,6 @@
 - **MySQL** - 关系型数据库
 - **MyBatis Plus 3.5.12** - ORM框架
 - **HikariCP** - 数据库连接池
-
-### AI集成
-- **LangChain4J 1.1.0** - AI集成框架
-- **LangChain4J OpenAI Spring Boot Starter** - OpenAI集成
-- **LangChain4J Reactor** - 响应式编程支持
 
 ### 文件存储
 - **MinIO 8.5.11** - 对象存储服务
@@ -65,7 +59,7 @@ java -version
 
 #### 安装MySQL
 - 下载并安装MySQL 8.0+
-- 创建数据库：`ai_coding`
+- 创建数据库：`basic`
 
 #### 安装MinIO
 ```bash
@@ -91,7 +85,7 @@ docker run -p 9000:9000 -p 9001:9001 \
 ```yaml
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/ai_coding?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/basic?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: your_mysql_username
     password: your_mysql_password
 
@@ -101,10 +95,6 @@ minio:
   secretKey: admin
   bucket: your-bucket-name
 
-# 配置OpenAI API（如果使用）
-langchain4j:
-  open-ai:
-    api-key: your_openai_api_key
 ```
 
 ### 4. 构建与运行
@@ -130,20 +120,12 @@ mvn spring-boot:run
 
 ```
 src/main/java/com/xiaoyu/basic/
-├── ai/                     # AI代码生成服务
-│   ├── model/             # AI返回结果模型
-│   ├── AiCodeGeneratorService.java
-│   └── AiCodeGeneratorServiceFactory.java
 ├── annotation/            # 自定义注解
 ├── aop/                   # 切面编程
 ├── common/                # 通用类
 ├── config/                # 配置类
 ├── constant/              # 常量定义
 ├── controller/            # 控制器层
-├── corn/                  # 核心业务逻辑
-│   ├── parser/           # 代码解析器
-│   ├── saver/            # 代码保存器
-│   └── AiCodeGeneratorFacade.java
 ├── exception/             # 异常处理
 ├── mapper/                # 数据访问层
 ├── model/                 # 数据模型
@@ -173,18 +155,12 @@ src/main/java/com/xiaoyu/basic/
 
 ## 🎯 核心功能
 
-### 1. AI代码生成
-- 支持HTML代码生成
-- 支持多文件代码生成
-- 流式响应支持
-- 自定义提示词模板
-
-### 2. 用户权限管理
+### 1. 用户权限管理
 - JWT身份认证
 - 基于角色的权限控制
 - 登录状态管理
 
-### 3. 文件存储
+### 2. 文件存储
 - MinIO对象存储
 - 文件上传/下载
 - 批量文件操作
@@ -202,11 +178,6 @@ src/main/java/com/xiaoyu/basic/
 本项目采用 [MIT](LICENSE) 许可证。
 
 ## 📞 联系方式
-
 如有问题或建议，请通过以下方式联系：
 - 提交 Issue
-- 发送邮件至：[your-email@example.com]
-
----
-
-**注意**: 请确保在生产环境中修改默认的数据库密码、MinIO密钥等敏感配置信息。
+- 发送邮件至：[1004579896@qq.com]
