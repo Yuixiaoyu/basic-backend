@@ -6,15 +6,12 @@ spring:
     url: jdbc:mysql://localhost:3306/basic?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: admin
-  profiles:
-    active: dev
   data:
     redis:
       database: 0
       host: 127.0.0.1
       port: 6379
       timeout: 10s
-      password:
       lettuce:
         pool:
           # 连接池最大连接数
@@ -25,6 +22,8 @@ spring:
           max-idle: 10
           # 连接池中的最小空闲连接
           min-idle: 0
+  profiles:
+    active: dev
 server:
   port: 8123
   servlet:
@@ -40,6 +39,7 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+
 # mybatis-plus
 mybatis-plus:
   configuration:
@@ -74,3 +74,6 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+  # jwt秘钥
+  jwt-secret-key: asdfasdfhalsdhflasdfnlajsdfblasdb
+
