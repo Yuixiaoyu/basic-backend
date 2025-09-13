@@ -1,9 +1,9 @@
 spring:
   application:
-    name: AI-coding-backend
+    name: Basic-backend
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ai_coding?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/basic?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: admin
   profiles:
@@ -16,14 +16,47 @@ server:
 springdoc:
   group-configs:
     - group: 'default'
-      packages-to-scan: com.xiaoyu.aicodingbackend.controller
+      packages-to-scan: com.xiaoyu.basic.controller
+
 # knife4j
 knife4j:
   enable: true
   setting:
     language: zh_cn
+# mybatis-plus
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    # 仅在开发环境开启日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+
 minio:
-  endpoint: http://127.0.0.1:9000
-  accessKey: admin
-  secretKey: admin
-  bucket: your-bucket-name
+  endpoint: xxxx
+  accessKey: xxx
+  secretKey: xxx
+  bucket: xxx
+
+# AI
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: xxx
+      api-key: xxx
+      model-name: xxx
+      max-tokens: 8096
+      strict-json-schema: true
+      response-format: json_object
+      log-requests: true
+      log-responses: true
+    streaming-chat-model:
+      base-url: xxx
+      api-key: xxx
+      model-name: xxx
+      max-tokens: 8096
+      log-requests: true
+      log-responses: true
