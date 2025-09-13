@@ -41,22 +41,3 @@ minio:
   secretKey: xxx
   bucket: xxx
 
-# AI
-langchain4j:
-  open-ai:
-    chat-model:
-      base-url: xxx
-      api-key: xxx
-      model-name: xxx
-      max-tokens: 8096
-      strict-json-schema: true
-      response-format: json_object
-      log-requests: true
-      log-responses: true
-    streaming-chat-model:
-      base-url: xxx
-      api-key: xxx
-      model-name: xxx
-      max-tokens: 8096
-      log-requests: true
-      log-responses: true
