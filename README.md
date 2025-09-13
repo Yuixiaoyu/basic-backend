@@ -179,5 +179,6 @@ src/main/java/com/xiaoyu/basic/
 
 ## 📞 联系方式
 如有问题或建议，请通过以下方式联系：
-- 提交 Issue
-- 发送邮件至：[1004579896@qq.com]
+
+<img style="width:200px;height:280px" src="https://youke1.picui.cn/s1/2025/09/14/68c5a03405338.jpg"></img>
+
